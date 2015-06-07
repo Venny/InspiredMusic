@@ -1,5 +1,6 @@
 package com.example.inspiredday.inspiredmusic;
 
+import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -47,8 +48,7 @@ public class InspiredWidget extends AppWidgetProvider {
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.inspired_widget);
-        views.setOnClickFillInIntent(R.id.show_button, playIntent);
-       /* Intent playIntent = new Intent(context, MainActivity.class);
+        //views.setOnClickFillInIntent(R.id.show_button, playIntent);
         playIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
 
         PendingIntent playPausePendingIntent = PendingIntent.getActivity(context, 0, playIntent, 0);
@@ -59,7 +59,7 @@ public class InspiredWidget extends AppWidgetProvider {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         views.setTextViewText(R.id.song_info, widgetText);
-        views.setOnClickPendingIntent(R.id.show_button, playPausePendingIntent);*/
+        views.setOnClickPendingIntent(R.id.show_button, playPausePendingIntent);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
