@@ -5,9 +5,11 @@ The application has its own widget, but at this moment the functionality is in d
 
 ## Some screen shots:
 * Inspired Music Player
+
 ![Inspired Music](https://github.com/Venny/InspiredMusic/blob/master/screenshot.png?raw=true)
 
 * Inspired Music Widget
+
 ![Inspired Music Widget](https://github.com/Venny/InspiredMusic/blob/master/screenshot_widget.png?raw=true)
 
 
