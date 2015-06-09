@@ -134,66 +134,16 @@ public class MainActivity extends ActionBarActivity implements MediaPlayerContro
     }
 
 
-    public void getSongList(){
-        //retrieve the song info
-        ContentResolver musicResolver = getContentResolver();
-        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
-
-        if (musicCursor != null && musicCursor.moveToFirst()){
-            //get columns
-            int titleColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
-            int idColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media._ID);
-            int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-
-            //add songs to list
-            do{
-                long thisId = musicCursor.getLong(idColumn);
-                String thisTitle = musicCursor.getString(titleColumn);
-                String thisArtist = musicCursor.getString(artistColumn);
-                songList.add(new Song(thisId,thisTitle, thisArtist));
-            }
-            while(musicCursor.moveToNext());
-        }
-    }
-
-    //connect to the service class
-    private ServiceConnection musicConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicBinder binder = (MusicBinder)service;
-            //get service
-            musicSrv = binder.getService();
-            //pass list
-            musicSrv.setList(songList);
-            musicBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            musicBound = false;
-        }
-    };
-
-    // OnClick function implemented in the xml file
-    public void songPicked(View view){
-        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
-        musicSrv.playSong();
-        if(playbackPaused){
-            playbackPaused = false;
-        }
-    }
-
     /* MediaPlayerControl methods */
     @Override
     public void start() {
-        System.out.println("Music start");
+        //System.out.println("Music start");
         musicSrv.go();
     }
 
     @Override
     public void pause() {
-        System.out.println("Music paused");
+        //System.out.println("Music paused");
         playbackPaused = true;
         musicSrv.pausePlayer();
     }
@@ -253,10 +203,69 @@ public class MainActivity extends ActionBarActivity implements MediaPlayerContro
         return 0;
     }
 
+    //connect to the service class
+    private ServiceConnection musicConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicBinder binder = (MusicBinder)service;
+            //get service
+            musicSrv = binder.getService();
+            //pass list
+            musicSrv.setList(songList);
+            musicBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            musicBound = false;
+        }
+    };
+
+    // Broadcast receiver to determine when music player has been prepared
+    private BroadcastReceiver onPreparedReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // When music player has been prepared, show controller
+            controller.show(0);
+        }
+    };
+
+    public void getSongList(){
+        //retrieve the song info
+        ContentResolver musicResolver = getContentResolver();
+        Uri musicUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Cursor musicCursor = musicResolver.query(musicUri, null, null, null, null);
+
+        if (musicCursor != null && musicCursor.moveToFirst()){
+            //get columns
+            int titleColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
+            int idColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media._ID);
+            int artistColumn = musicCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
+
+            //add songs to list
+            do{
+                long thisId = musicCursor.getLong(idColumn);
+                String thisTitle = musicCursor.getString(titleColumn);
+                String thisArtist = musicCursor.getString(artistColumn);
+                songList.add(new Song(thisId,thisTitle, thisArtist));
+            }
+            while(musicCursor.moveToNext());
+        }
+    }
+
+    // OnClick function implemented in the xml file
+    public void songPicked(View view){
+        musicSrv.setSong(Integer.parseInt(view.getTag().toString()));
+        musicSrv.playSong();
+        if(playbackPaused){
+            playbackPaused = false;
+        }
+    }
+
     private void setController(){
         //set the controller up
         if(controller == null){
-            System.out.println(1111);
+            //System.out.println(1111);
             controller = new MusicController(this);
         }
         controller.setPrevNextListeners(
@@ -278,7 +287,6 @@ public class MainActivity extends ActionBarActivity implements MediaPlayerContro
         controller.setEnabled(true);
         controller.setAnchorView(findViewById(R.id.song_list));
     }
-
     //play next
     private void playNext(){
         musicSrv.playNext();
@@ -287,6 +295,7 @@ public class MainActivity extends ActionBarActivity implements MediaPlayerContro
         }
 
     }
+
     //play previous
     private void playPrev(){
         musicSrv.playPrev();
@@ -295,13 +304,4 @@ public class MainActivity extends ActionBarActivity implements MediaPlayerContro
         }
         Log.d("Prev", "Song");
     }
-
-    // Broadcast receiver to determine when music player has been prepared
-    private BroadcastReceiver onPreparedReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // When music player has been prepared, show controller
-            controller.show(0);
-        }
-    };
 }

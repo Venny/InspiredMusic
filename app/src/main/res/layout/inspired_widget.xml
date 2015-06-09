@@ -13,10 +13,12 @@
 
         <TextView
             android:id="@+id/song_info"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:paddingRight="@dimen/widget_padding" />
+            android:paddingRight="@dimen/widget_padding"
+            android:text="@string/sample"
+            android:layout_gravity="center" />
 
         <ImageButton
             android:id="@+id/show_button"

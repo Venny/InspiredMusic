@@ -41,8 +41,6 @@ MediaPlayer.OnCompletionListener {
     private boolean shuffle = false;
     private Random rand;
 
-    private Intent widgetIntent;
-
     @Override
     public IBinder onBind(Intent intent) {
         return musicBind;
@@ -67,7 +65,7 @@ MediaPlayer.OnCompletionListener {
     public void onPrepared(MediaPlayer mp) {
         //start playback
         player.start();
-        System.out.println("Started. onPrepared");
+        //System.out.println("Started. onPrepared");
 
         // Broadcast intent to activity to let it know the media player has been prepared
         Intent onPreparedIntent = new Intent("MEDIA_PLAYER_PREPARED");
@@ -98,21 +96,19 @@ MediaPlayer.OnCompletionListener {
         //create player
         player = new MediaPlayer();
         rand = new Random();
-        widgetIntent = new Intent(this, InspiredWidget.class);
         initMusicPlayer();
-        System.out.println("onCreate: " + widgetIntent);
     }
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
         mp.reset();
-        System.out.println("onError");
+        //System.out.println("onError");
         return false;
     }
 
     @Override
     public void  onDestroy(){
-        System.out.println("onDestroy");
+        //System.out.println("onDestroy");
         stopForeground(true);
     }
 
@@ -160,7 +156,7 @@ MediaPlayer.OnCompletionListener {
         catch (Exception e){
             Log.e("MUSIC SERVICE", "Error setting data source");
         }
-        System.out.println("Before preparing --> playSong()");
+       // System.out.println("Before preparing --> playSong()");
         // When the player is prepared the onPrepared() will be executed
         player.prepareAsync();
 

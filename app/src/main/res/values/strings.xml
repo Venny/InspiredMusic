@@ -7,4 +7,5 @@
     <string name="end_icon">End</string>
     <string name="appwidget_text">Play a song</string>
     <string name="add_widget">Add widget</string>
+    <string name="sample">Sample text</string>
 </resources>
