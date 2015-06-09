@@ -13,5 +13,6 @@ There is also an implemented Notification, created with NotificationCompat class
 
   ![Inspired Music Widget](https://github.com/Venny/InspiredMusic/blob/master/screenshot_widget.png?raw=true)
 
+* Notification
 
-
+  ![Inspired Music Notification](https://raw.githubusercontent.com/Venny/InspiredMusic/master/screenshot_notification.png)
